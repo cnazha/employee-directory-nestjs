@@ -5,6 +5,7 @@ import { documentIDGenerator } from '../helpers/document-id-generator';
 @Schema({
   _id: false,
   timestamps: true,
+  toJSON: { getters: true },
 })
 @ObjectType()
 export class BaseDocumentEntity {
@@ -17,8 +18,8 @@ export class BaseDocumentEntity {
   @Prop({
     type: String,
     virtual: true,
-    get: function () {
-      return this.id;
+    get() {
+      return this._id;
     },
   })
   @Field(() => ID, { nullable: false })
