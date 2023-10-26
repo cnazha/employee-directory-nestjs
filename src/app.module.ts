@@ -7,12 +7,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { envConfigOptions, mongooseConfig } from './config';
 import { graphqlConfig } from './config/graphql.config';
+import { DepartmentsModule } from './departments/departments.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(envConfigOptions),
     MongooseModule.forRootAsync(mongooseConfig),
     GraphQLModule.forRoot<ApolloDriverConfig>(graphqlConfig),
+    DepartmentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
