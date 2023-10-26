@@ -3,8 +3,14 @@
 # ------------------------------------------------------
 
 input CreateDepartmentInput {
-  """Department Id"""
-  exampleField: String!
+  """Department name"""
+  name: String!
+}
+
+type CreateDepartmentMutationResponse implements MutationResponse {
+  item: Department
+  message: String
+  success: Boolean!
 }
 
 """
@@ -21,19 +27,45 @@ type Department {
   updatedAt: DateTime
 }
 
+type DepartmentsListResponse {
+  hasNextPage: Boolean
+  items: [Department!]
+  page: Int!
+  success: Boolean!
+  totalCount: Int!
+}
+
 type Mutation {
-  createDepartment(createDepartmentInput: CreateDepartmentInput!): Department!
-  removeDepartment(id: String!): Department!
-  updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): Department!
+  createDepartment(createDepartmentInput: CreateDepartmentInput!): CreateDepartmentMutationResponse!
+  removeDepartment(id: String!): RemoveDepartmentMutationResponse!
+  updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): UpdateDepartmentMutationResponse!
+}
+
+interface MutationResponse {
+  message: String
+  success: Boolean!
 }
 
 type Query {
   department(id: String!): Department!
-  departments: [Department!]!
+  departments: DepartmentsListResponse!
+}
+
+type RemoveDepartmentMutationResponse implements MutationResponse {
+  item: Department
+  message: String
+  success: Boolean!
 }
 
 input UpdateDepartmentInput {
-  """Department Id"""
-  exampleField: String
   id: String!
+
+  """Department name"""
+  name: String
+}
+
+type UpdateDepartmentMutationResponse implements MutationResponse {
+  item: Department
+  message: String
+  success: Boolean!
 }

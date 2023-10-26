@@ -1,26 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDepartmentInput } from './dto/create-department.input';
 import { UpdateDepartmentInput } from './dto/update-department.input';
+import { Department } from './entities/department.entity';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { IPaginatedType } from '../common/types/pagination.type';
 
 @Injectable()
 export class DepartmentsService {
-  create(createDepartmentInput: CreateDepartmentInput) {
-    return 'This action adds a new department';
+  constructor(
+    @InjectModel(Department.name) private departmentModel: Model<Department>,
+  ) {}
+  async create(createDepartmentInput: CreateDepartmentInput) {
+    return this.departmentModel.create(createDepartmentInput);
   }
 
-  findAll() {
-    return `This action returns all departments`;
+  async findAll(): Promise<IPaginatedType<Department>> {
+    const query = {};
+    const itemsRequest = this.departmentModel.find(query);
+    const totalCountRequest = this.departmentModel.countDocuments(query);
+    const requests = [itemsRequest, totalCountRequest];
+    // Run in parallel
+    const [itemsRes, totalCountRes] = await Promise.allSettled(requests);
+    // Handle errors
+    if (itemsRes.status === 'rejected') throw itemsRes.reason;
+    if (totalCountRes.status === 'rejected') throw totalCountRes.reason;
+
+    const items = itemsRes.value as Department[];
+    const totalCount = totalCountRes.value as number;
+    return {
+      items: items,
+      totalCount,
+      hasNextPage: false,
+      page: 1,
+    };
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} department`;
+    return this.departmentModel.findById(id);
   }
 
   update(id: string, updateDepartmentInput: UpdateDepartmentInput) {
-    return `This action updates a #${id} department`;
+    return this.departmentModel.findByIdAndUpdate(id, updateDepartmentInput, {
+      new: true,
+    });
   }
 
   remove(id: string) {
-    return `This action removes a #${id} department`;
+    return this.departmentModel.findByIdAndRemove(id);
   }
 }

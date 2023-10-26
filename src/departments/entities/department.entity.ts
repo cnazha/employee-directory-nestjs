@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseDocumentEntity } from '../../common/entities/base.document';
 import { HydratedDocument } from 'mongoose';
 
@@ -9,6 +9,11 @@ import { HydratedDocument } from 'mongoose';
 })
 @ObjectType()
 export class Department extends BaseDocumentEntity {
+  @Prop({
+    type: String,
+    required: true,
+    trim: true,
+  })
   @Field(() => String, { description: 'Department name', nullable: false })
   name: string;
 }
