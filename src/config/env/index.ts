@@ -14,7 +14,7 @@ const ENV_CONFIG_SCHEMA = Joi.object({
 export const envConfigOptions: ConfigModuleOptions = {
   load: ENV_CONFIG,
   validationSchema: ENV_CONFIG_SCHEMA,
-  isGlobal: false,
+  isGlobal: true,
   cache: true,
   expandVariables: true,
 };

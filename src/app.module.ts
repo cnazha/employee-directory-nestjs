@@ -3,9 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { envConfigOptions, mongooseConfig } from './config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriverConfig } from '@nestjs/apollo';
+import { envConfigOptions, mongooseConfig } from './config';
 import { graphqlConfig } from './config/graphql.config';
 
 @Module({
