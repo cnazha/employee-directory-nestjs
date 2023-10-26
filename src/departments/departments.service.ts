@@ -12,15 +12,15 @@ export class DepartmentsService {
     return `This action returns all departments`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} department`;
   }
 
-  update(id: number, updateDepartmentInput: UpdateDepartmentInput) {
+  update(id: string, updateDepartmentInput: UpdateDepartmentInput) {
     return `This action updates a #${id} department`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} department`;
   }
 }
