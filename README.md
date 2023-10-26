@@ -11,6 +11,13 @@ This is the backend for the Employee Directory application. It is built using Ne
 
 ## Installation
 
+Init the project by running the following command:
+```shell
+sh ./scripts/init.sh
+```
+
+
+Install the necessary dependencies by running the following command:
 ```bash
 $ npm install
 ```
