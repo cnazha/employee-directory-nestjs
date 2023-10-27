@@ -28,10 +28,14 @@ export class DepartmentsResolver {
         message: 'Department created successfully',
       };
     } catch (e) {
+      let message = e.message;
+      if (e.code === 11000) {
+        message = 'Department already exists';
+      }
       return {
         item: null,
         success: false,
-        message: e.message,
+        message,
       };
     }
   }
@@ -39,7 +43,10 @@ export class DepartmentsResolver {
   @Query(() => DepartmentsListResponse, { name: 'departments' })
   async findAll() {
     try {
-      const data = await this.departmentsService.findAll();
+      const data = await this.departmentsService.findAll(
+        {},
+        { page: 1, limit: 10 },
+      );
       return {
         ...data,
         success: true,
@@ -48,9 +55,8 @@ export class DepartmentsResolver {
       return {
         items: [],
         totalCount: 0,
-        hasNextPage: false,
-        page: 1,
         success: false,
+        message: e.message,
       };
     }
   }

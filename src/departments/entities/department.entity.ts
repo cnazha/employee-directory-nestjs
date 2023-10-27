@@ -19,4 +19,7 @@ export class Department extends BaseDocumentEntity {
 }
 
 export type DepartmentDocument = HydratedDocument<Department>;
+
 export const DepartmentSchema = SchemaFactory.createForClass(Department);
+
+DepartmentSchema.index({ name: 1 }, { unique: true });

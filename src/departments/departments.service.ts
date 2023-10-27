@@ -2,51 +2,70 @@ import { Injectable } from '@nestjs/common';
 import { CreateDepartmentInput } from './dto/create-department.input';
 import { UpdateDepartmentInput } from './dto/update-department.input';
 import { Department } from './entities/department.entity';
-import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { IPaginatedType } from '../common/types/pagination.type';
+import {
+  IPaginatedType,
+  PaginationArgs,
+} from '../common/types/pagination.type';
+import { PaginateModel } from 'mongoose';
 
 @Injectable()
 export class DepartmentsService {
   constructor(
-    @InjectModel(Department.name) private departmentModel: Model<Department>,
+    @InjectModel(Department.name)
+    private departmentModel: PaginateModel<Department>,
   ) {}
-  async create(createDepartmentInput: CreateDepartmentInput) {
+  create(createDepartmentInput: CreateDepartmentInput) {
     return this.departmentModel.create(createDepartmentInput);
   }
 
-  async findAll(): Promise<IPaginatedType<Department>> {
-    const query = {};
-    const itemsRequest = this.departmentModel.find(query);
-    const totalCountRequest = this.departmentModel.countDocuments(query);
-    const requests = [itemsRequest, totalCountRequest];
-    // Run in parallel
-    const [itemsRes, totalCountRes] = await Promise.allSettled(requests);
-    // Handle errors
-    if (itemsRes.status === 'rejected') throw itemsRes.reason;
-    if (totalCountRes.status === 'rejected') throw totalCountRes.reason;
+  async findAll(
+    filter?: { name?: string },
+    pagination?: PaginationArgs,
+  ): Promise<IPaginatedType<Department>> {
+    const name = filter?.name || '';
+    const query = {
+      //name: { $regex: filter.name, $options: 'i' },
+    };
 
-    const items = itemsRes.value as Department[];
-    const totalCount = totalCountRes.value as number;
+    const result = await this.departmentModel.paginate(query, {
+      page: pagination.page,
+      limit: pagination.limit,
+      collation: {
+        locale: 'en',
+      },
+    });
+
     return {
-      items: items,
-      totalCount,
-      hasNextPage: false,
-      page: 1,
+      items: result.docs,
+      totalCount: result.totalDocs,
+      hasNextPage: result.hasNextPage,
+      page: result.page,
+      totalPages: result.totalPages,
     };
   }
 
-  findOne(id: string) {
-    return this.departmentModel.findById(id);
+  async findOne(id: string) {
+    const item = await this.departmentModel.findById(id);
+    if (!item) throw new Error('Department not found');
+    return item;
   }
 
   update(id: string, updateDepartmentInput: UpdateDepartmentInput) {
-    return this.departmentModel.findByIdAndUpdate(id, updateDepartmentInput, {
-      new: true,
-    });
+    const item = this.departmentModel.findByIdAndUpdate(
+      id,
+      updateDepartmentInput,
+      {
+        new: true,
+      },
+    );
+    if (!item) throw new Error('Department not found');
+    return item;
   }
 
-  remove(id: string) {
-    return this.departmentModel.findByIdAndRemove(id);
+  async remove(id: string) {
+    const item = await this.departmentModel.findByIdAndRemove(id);
+    if (!item) throw new Error('Department not found');
+    return item;
   }
 }

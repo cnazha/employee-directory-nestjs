@@ -33,6 +33,7 @@ type DepartmentsListResponse {
   page: Int!
   success: Boolean!
   totalCount: Int!
+  totalPages: Int!
 }
 
 type Mutation {
