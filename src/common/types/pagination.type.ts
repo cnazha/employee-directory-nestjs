@@ -6,7 +6,13 @@ export interface IPaginatedType<T> {
   page: number;
   totalCount: number;
   hasNextPage: boolean;
+  totalPages?: number;
 }
+
+export type PaginationArgs = {
+  page: number;
+  limit: number;
+};
 
 export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
   @ObjectType({ isAbstract: true })
@@ -19,6 +25,9 @@ export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
 
     @Field((type) => Int)
     totalCount: number;
+
+    @Field((type) => Int)
+    totalPages: number;
 
     @Field(() => Boolean, { nullable: true, defaultValue: null })
     hasNextPage: boolean;
