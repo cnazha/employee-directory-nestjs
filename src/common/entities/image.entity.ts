@@ -2,6 +2,7 @@ import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseDocumentEntity } from './base.document';
 import { HydratedDocument } from 'mongoose';
+import { GraphQLURL } from 'graphql-scalars';
 
 @Schema({
   _id: false,
@@ -14,7 +15,7 @@ export class ImageEntity extends BaseDocumentEntity {
     type: String,
     required: true,
   })
-  @Field(() => String, { nullable: false, description: 'Public image URL' })
+  @Field(() => GraphQLURL, { nullable: false, description: 'Public image URL' })
   url: string;
   @Prop({
     type: String,
@@ -37,6 +38,11 @@ export class ImageEntity extends BaseDocumentEntity {
   })
   @Field(() => Float, { nullable: false, description: 'Original image height' })
   height: number;
+
+  @Field(() => Float, { nullable: true, description: 'Image aspect ratio' })
+  get aspectRatio(): number {
+    return this.width / this.height;
+  }
 }
 
 export type ImageDocument = HydratedDocument<ImageEntity>;
