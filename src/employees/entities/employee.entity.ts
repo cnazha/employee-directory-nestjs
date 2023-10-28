@@ -4,6 +4,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import moment from 'moment';
 import { ImageEntity, ImageSchema } from '../../common/entities/image.entity';
+import { GraphQLEmailAddress } from 'graphql-scalars';
 
 @Schema({
   timestamps: true,
@@ -29,7 +30,7 @@ export class Employee extends BaseDocumentEntity {
     type: String,
     required: true,
   })
-  @Field(() => String, { nullable: false })
+  @Field(() => GraphQLEmailAddress, { nullable: false })
   email: string;
   @Prop({
     type: String,

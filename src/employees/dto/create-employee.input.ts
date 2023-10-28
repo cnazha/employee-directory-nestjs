@@ -1,7 +1,8 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLEmailAddress } from 'graphql-scalars';
 
 @InputType()
 export class CreateEmployeeInput {
-  @Field(() => ID, { description: 'Employee Id' })
-  id: string;
+  @Field(() => GraphQLEmailAddress, { description: 'Employee email address' })
+  email: string;
 }

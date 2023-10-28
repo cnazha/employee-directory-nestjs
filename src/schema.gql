@@ -14,8 +14,8 @@ type CreateDepartmentMutationResponse implements MutationResponse {
 }
 
 input CreateEmployeeInput {
-  """Employee Id"""
-  id: ID!
+  """Employee email address"""
+  email: EmailAddress!
 }
 
 """
@@ -41,11 +41,16 @@ type DepartmentsListResponse {
   totalPages: Int!
 }
 
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
+
 type Employee {
   avatar: ImageEntity
   birthdate: DateTime
   createdAt: DateTime
-  email: String!
+  email: EmailAddress!
   firstName: String!
   id: ID!
   lastName: String!
@@ -113,5 +118,7 @@ type UpdateDepartmentMutationResponse implements MutationResponse {
 }
 
 input UpdateEmployeeInput {
+  """Employee email address"""
+  email: EmailAddress
   id: String!
 }
