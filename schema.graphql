@@ -10,6 +10,20 @@ interface MutationResponse {
     success: Boolean!
 }
 
+type AddressEntity {
+    building: String!
+    city: String!
+    coordinates: GeoCoordinatesEntity
+    country: CountryCode!
+    createdAt: DateTime
+    id: ID!
+    notes: String!
+    postalCode: PostalCode
+    state: String!
+    street: String!
+    updatedAt: DateTime
+}
+
 type CreateDepartmentMutationResponse implements MutationResponse {
     item: Department
     message: String
@@ -27,21 +41,62 @@ type Department {
 type DepartmentsListResponse {
     hasNextPage: Boolean
     items: [Department!]
-    page: Int!
+    page: PositiveInt!
     success: Boolean!
-    totalCount: Int!
-    totalPages: Int!
+    totalCount: NonNegativeInt!
+    totalPages: NonNegativeInt!
+}
+
+type Employee {
+    address: AddressEntity
+    age: PositiveInt
+    avatar: ImageEntity
+    birthdate: DateTime
+    createdAt: DateTime
+    email: EmailAddress!
+    firstName: String!
+    id: ID!
+    lastName: String!
+    name: String!
+    phone: PhoneNumber!
+    preferredLanguage: String
+    salaryCurrency: Currency
+    updatedAt: DateTime
+}
+
+type GeoCoordinatesEntity {
+    latitude: Latitude!
+    longitude: Longitude!
+}
+
+type ImageEntity {
+    createdAt: DateTime
+    "Original image height"
+    height: Float!
+    id: ID!
+    "Image path on Firebase Bucket"
+    path: String!
+    updatedAt: DateTime
+    "Public image URL"
+    url: URL!
+    "Original image width"
+    width: Float!
 }
 
 type Mutation {
     createDepartment(createDepartmentInput: CreateDepartmentInput!): CreateDepartmentMutationResponse!
+    createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
     removeDepartment(id: String!): RemoveDepartmentMutationResponse!
+    removeEmployee(id: String!): Employee!
     updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): UpdateDepartmentMutationResponse!
+    updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
 }
 
 type Query {
     department(id: String!): Department!
     departments: DepartmentsListResponse!
+    employee(id: String!): Employee!
+    employees: [Employee!]!
 }
 
 type RemoveDepartmentMutationResponse implements MutationResponse {
@@ -56,16 +111,61 @@ type UpdateDepartmentMutationResponse implements MutationResponse {
     success: Boolean!
 }
 
+"A country code as defined by ISO 3166-1 alpha-2"
+scalar CountryCode
+
+"A field whose value is a Currency: https://en.wikipedia.org/wiki/ISO_4217."
+scalar Currency
+
 "A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
 scalar DateTime
+
+"A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address."
+scalar EmailAddress
+
+"A field whose value is a valid decimal degrees latitude number (53.471): https://en.wikipedia.org/wiki/Latitude"
+scalar Latitude
+
+"A field whose value is a valid decimal degrees longitude number (53.471): https://en.wikipedia.org/wiki/Longitude"
+scalar Longitude
+
+"Integers that will have a value of 0 or more."
+scalar NonNegativeInt
+
+"A field whose value conforms to the standard E.164 format as specified in: https://en.wikipedia.org/wiki/E.164. Basically this is +17895551234."
+scalar PhoneNumber
+
+"Integers that will have a value greater than 0."
+scalar PositiveInt
+
+"A field whose value conforms to the standard postal code formats for United States, United Kingdom, Germany, Canada, France, Italy, Australia, Netherlands, Spain, Denmark, Sweden, Belgium, India, Austria, Portugal, Switzerland or Luxembourg."
+scalar PostalCode
+
+"A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt."
+scalar URL
+
+"A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier."
+scalar UUID
 
 input CreateDepartmentInput {
     "Department name"
     name: String!
 }
 
+input CreateEmployeeInput {
+    "Employee email address"
+    email: EmailAddress!
+}
+
 input UpdateDepartmentInput {
     id: String!
     "Department name"
     name: String
+}
+
+input UpdateEmployeeInput {
+    "Employee email address"
+    email: EmailAddress
+    "Employee id"
+    id: UUID!
 }

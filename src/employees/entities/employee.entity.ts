@@ -1,10 +1,16 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseDocumentEntity } from '../../common/entities/base.document';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import moment from 'moment';
+import {
+  GraphQLCurrency,
+  GraphQLEmailAddress,
+  GraphQLPhoneNumber,
+  GraphQLPositiveInt,
+} from 'graphql-scalars';
+import { AddressEntity } from '../../common/entities/address.entity';
 import { ImageEntity, ImageSchema } from '../../common/entities/image.entity';
-import { GraphQLEmailAddress } from 'graphql-scalars';
+import { BaseDocumentEntity } from '../../common/entities/base.document';
 
 @Schema({
   timestamps: true,
@@ -20,6 +26,10 @@ export class Employee extends BaseDocumentEntity {
   name: string;
   @Field(() => Date, { nullable: true })
   birthdate: Date;
+
+  @Field(() => GraphQLPositiveInt, { nullable: true })
+  age: number;
+
   @Prop({
     type: ImageSchema,
     required: false,
@@ -32,12 +42,22 @@ export class Employee extends BaseDocumentEntity {
   })
   @Field(() => GraphQLEmailAddress, { nullable: false })
   email: string;
+
   @Prop({
     type: String,
     required: true,
   })
-  @Field(() => String, { nullable: false })
+  @Field(() => GraphQLPhoneNumber, { nullable: false })
   phone: string;
+
+  @Prop({
+    type: String,
+  })
+  @Field(() => GraphQLCurrency, { nullable: true })
+  salaryCurrency: string;
+
+  @Field(() => AddressEntity, { nullable: true })
+  address: AddressEntity;
 }
 
 const EmployeeSchema = SchemaFactory.createForClass(Employee);
