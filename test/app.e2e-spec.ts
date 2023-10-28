@@ -3,6 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
+const gqlPath = '/graphql';
+
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
@@ -13,6 +15,12 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+  });
+
+  afterAll(async () => {
+    // Delete all data from database
+
+    await app.close();
   });
 
   it('/ (GET)', () => {

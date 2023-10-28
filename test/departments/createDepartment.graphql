@@ -1,0 +1,12 @@
+mutation CreateDepartment($createDepartmentInput: CreateDepartmentInput!) {
+    createDepartment(createDepartmentInput: $createDepartmentInput) {
+        message
+        success
+        item {
+            id
+            name
+            createdAt
+            updatedAt
+        }
+    }
+}
