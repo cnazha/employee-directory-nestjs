@@ -2,6 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AddressEntity {
+  building: String!
+  city: String!
+  coordinates: GeoCoordinatesEntity
+  country: CountryCode!
+  createdAt: DateTime
+  id: ID!
+  notes: String!
+  postalCode: PostalCode
+  state: String!
+  street: String!
+  updatedAt: DateTime
+}
+
+"""A country code as defined by ISO 3166-1 alpha-2"""
+scalar CountryCode
+
 input CreateDepartmentInput {
   """Department name"""
   name: String!
@@ -17,6 +34,11 @@ input CreateEmployeeInput {
   """Employee email address"""
   email: EmailAddress!
 }
+
+"""
+A field whose value is a Currency: https://en.wikipedia.org/wiki/ISO_4217.
+"""
+scalar Currency @specifiedBy(url: "https://en.wikipedia.org/wiki/ISO_4217")
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
@@ -35,10 +57,10 @@ type Department {
 type DepartmentsListResponse {
   hasNextPage: Boolean
   items: [Department!]
-  page: Int!
+  page: PositiveInt!
   success: Boolean!
-  totalCount: Int!
-  totalPages: Int!
+  totalCount: NonNegativeInt!
+  totalPages: NonNegativeInt!
 }
 
 """
@@ -47,6 +69,8 @@ A field whose value conforms to the standard internet email address format as sp
 scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
 
 type Employee {
+  address: AddressEntity
+  age: PositiveInt
   avatar: ImageEntity
   birthdate: DateTime
   createdAt: DateTime
@@ -55,11 +79,19 @@ type Employee {
   id: ID!
   lastName: String!
   name: String!
-  phone: String!
+  phone: PhoneNumber!
+  salaryCurrency: Currency
   updatedAt: DateTime
 }
 
+type GeoCoordinatesEntity {
+  latitude: Latitude!
+  longitude: Longitude!
+}
+
 type ImageEntity {
+  """Image aspect ratio"""
+  aspectRatio: Float
   createdAt: DateTime
 
   """Original image height"""
@@ -71,11 +103,21 @@ type ImageEntity {
   updatedAt: DateTime
 
   """Public image URL"""
-  url: String!
+  url: URL!
 
   """Original image width"""
   width: Float!
 }
+
+"""
+A field whose value is a valid decimal degrees latitude number (53.471): https://en.wikipedia.org/wiki/Latitude
+"""
+scalar Latitude
+
+"""
+A field whose value is a valid decimal degrees longitude number (53.471): https://en.wikipedia.org/wiki/Longitude
+"""
+scalar Longitude
 
 type Mutation {
   createDepartment(createDepartmentInput: CreateDepartmentInput!): CreateDepartmentMutationResponse!
@@ -91,6 +133,22 @@ interface MutationResponse {
   success: Boolean!
 }
 
+"""Integers that will have a value of 0 or more."""
+scalar NonNegativeInt
+
+"""
+A field whose value conforms to the standard E.164 format as specified in: https://en.wikipedia.org/wiki/E.164. Basically this is +17895551234.
+"""
+scalar PhoneNumber
+
+"""Integers that will have a value greater than 0."""
+scalar PositiveInt
+
+"""
+A field whose value conforms to the standard postal code formats for United States, United Kingdom, Germany, Canada, France, Italy, Australia, Netherlands, Spain, Denmark, Sweden, Belgium, India, Austria, Portugal, Switzerland or Luxembourg.
+"""
+scalar PostalCode
+
 type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
@@ -103,6 +161,16 @@ type RemoveDepartmentMutationResponse implements MutationResponse {
   message: String
   success: Boolean!
 }
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUID
 
 input UpdateDepartmentInput {
   id: String!
@@ -120,5 +188,7 @@ type UpdateDepartmentMutationResponse implements MutationResponse {
 input UpdateEmployeeInput {
   """Employee email address"""
   email: EmailAddress
-  id: String!
+
+  """Employee id"""
+  id: UUID!
 }

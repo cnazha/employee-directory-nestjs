@@ -1,9 +1,21 @@
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { ApolloDriver } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { EmailAddressResolver } from 'graphql-scalars';
+import {
+  CountryCodeResolver,
+  CurrencyResolver,
+  EmailAddressResolver,
+  LatitudeResolver,
+  LongitudeResolver,
+  NonNegativeIntResolver,
+  PhoneNumberResolver,
+  PositiveIntResolver,
+  PostalCodeResolver,
+  URLResolver,
+  UUIDResolver,
+} from 'graphql-scalars';
 
-export const graphqlConfig = {
+export const graphqlConfig: ApolloDriverConfig = {
   driver: ApolloDriver,
   autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
   sortSchema: true,
@@ -11,5 +23,15 @@ export const graphqlConfig = {
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
   resolvers: {
     EmailAddress: EmailAddressResolver,
+    UUID: UUIDResolver,
+    PositiveInt: PositiveIntResolver,
+    NonNegativeInt: NonNegativeIntResolver,
+    CountryCode: CountryCodeResolver,
+    PhoneNumber: PhoneNumberResolver,
+    PostalCode: PostalCodeResolver,
+    Currency: CurrencyResolver,
+    URL: URLResolver,
+    Latitude: LatitudeResolver,
+    Longitude: LongitudeResolver,
   },
 };
