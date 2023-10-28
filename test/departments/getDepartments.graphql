@@ -1,0 +1,15 @@
+query GetDepartments {
+    departments {
+        items {
+            name
+            createdAt
+            id
+            updatedAt
+        }
+        page
+        hasNextPage
+        totalCount
+        totalPages
+        success
+    }
+}

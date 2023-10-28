@@ -1,0 +1,8 @@
+query GetDepartment($departmentId: String!) {
+    department(id: $departmentId) {
+        id
+        name
+        updatedAt
+        createdAt
+    }
+}

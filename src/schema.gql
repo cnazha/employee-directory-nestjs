@@ -2,6 +2,71 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateDepartmentInput {
+  """Department name"""
+  name: String!
+}
+
+type CreateDepartmentMutationResponse implements MutationResponse {
+  item: Department
+  message: String
+  success: Boolean!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Department {
+  createdAt: DateTime
+  id: ID!
+
+  """Department name"""
+  name: String!
+  updatedAt: DateTime
+}
+
+type DepartmentsListResponse {
+  hasNextPage: Boolean
+  items: [Department!]
+  page: Int!
+  success: Boolean!
+  totalCount: Int!
+  totalPages: Int!
+}
+
+type Mutation {
+  createDepartment(createDepartmentInput: CreateDepartmentInput!): CreateDepartmentMutationResponse!
+  removeDepartment(id: String!): RemoveDepartmentMutationResponse!
+  updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): UpdateDepartmentMutationResponse!
+}
+
+interface MutationResponse {
+  message: String
+  success: Boolean!
+}
+
 type Query {
-  testDepartment: String!
+  department(id: String!): Department!
+  departments: DepartmentsListResponse!
+}
+
+type RemoveDepartmentMutationResponse implements MutationResponse {
+  item: Department
+  message: String
+  success: Boolean!
+}
+
+input UpdateDepartmentInput {
+  id: String!
+
+  """Department name"""
+  name: String
+}
+
+type UpdateDepartmentMutationResponse implements MutationResponse {
+  item: Department
+  message: String
+  success: Boolean!
 }
