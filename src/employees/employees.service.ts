@@ -12,15 +12,15 @@ export class EmployeesService {
     return `This action returns all employees`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} employee`;
   }
 
-  update(id: number, updateEmployeeInput: UpdateEmployeeInput) {
+  update(id: string, updateEmployeeInput: UpdateEmployeeInput) {
     return `This action updates a #${id} employee`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} employee`;
   }
 }

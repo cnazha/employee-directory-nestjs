@@ -14,8 +14,8 @@ type CreateDepartmentMutationResponse implements MutationResponse {
 }
 
 input CreateEmployeeInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """Employee Id"""
+  id: ID!
 }
 
 """
@@ -42,15 +42,41 @@ type DepartmentsListResponse {
 }
 
 type Employee {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  avatar: ImageEntity
+  birthdate: DateTime
+  createdAt: DateTime
+  email: String!
+  firstName: String!
+  id: ID!
+  lastName: String!
+  name: String!
+  phone: String!
+  updatedAt: DateTime
+}
+
+type ImageEntity {
+  createdAt: DateTime
+
+  """Original image height"""
+  height: Float!
+  id: ID!
+
+  """Image path on Firebase Bucket"""
+  path: String!
+  updatedAt: DateTime
+
+  """Public image URL"""
+  url: String!
+
+  """Original image width"""
+  width: Float!
 }
 
 type Mutation {
   createDepartment(createDepartmentInput: CreateDepartmentInput!): CreateDepartmentMutationResponse!
   createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   removeDepartment(id: String!): RemoveDepartmentMutationResponse!
-  removeEmployee(id: Int!): Employee!
+  removeEmployee(id: String!): Employee!
   updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): UpdateDepartmentMutationResponse!
   updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
 }
@@ -63,7 +89,7 @@ interface MutationResponse {
 type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
-  employee(id: Int!): Employee!
+  employee(id: String!): Employee!
   employees: [Employee!]!
 }
 
@@ -87,7 +113,5 @@ type UpdateDepartmentMutationResponse implements MutationResponse {
 }
 
 input UpdateEmployeeInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  id: String!
 }
