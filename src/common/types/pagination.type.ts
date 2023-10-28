@@ -1,5 +1,6 @@
 import { Type } from '@nestjs/common';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { GraphQLNonNegativeInt, GraphQLPositiveInt } from 'graphql-scalars';
 
 export interface IPaginatedType<T> {
   items: T[];
@@ -20,16 +21,16 @@ export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
     @Field((type) => [classRef], { nullable: true })
     items: T[];
 
-    @Field((type) => Int)
+    @Field((type) => GraphQLPositiveInt)
     page: number;
 
-    @Field((type) => Int)
+    @Field((type) => GraphQLNonNegativeInt)
     totalCount: number;
 
-    @Field((type) => Int)
+    @Field((type) => GraphQLNonNegativeInt)
     totalPages: number;
 
-    @Field(() => Boolean, { nullable: true, defaultValue: null })
+    @Field(() => Boolean, { nullable: true, defaultValue: false })
     hasNextPage: boolean;
   }
   return PaginatedType as Type<IPaginatedType<T>>;
