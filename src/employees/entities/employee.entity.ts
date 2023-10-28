@@ -8,7 +8,10 @@ import {
   GraphQLPhoneNumber,
   GraphQLPositiveInt,
 } from 'graphql-scalars';
-import { AddressEntity } from '../../common/entities/address.entity';
+import {
+  AddressEntity,
+  AddressSchema,
+} from '../../common/entities/address.entity';
 import { ImageEntity, ImageSchema } from '../../common/entities/image.entity';
 import { BaseDocumentEntity } from '../../common/entities/base.document';
 
@@ -17,13 +20,26 @@ import { BaseDocumentEntity } from '../../common/entities/base.document';
 })
 @ObjectType()
 export class Employee extends BaseDocumentEntity {
-  @Field(() => String, { nullable: false })
+  @Prop({
+    type: String,
+    required: true,
+  })
+  @Field(() => String, { nullable: false, description: 'First name' })
   firstName: string;
-  @Field(() => String, { nullable: false })
+  @Prop({
+    type: String,
+    required: true,
+  })
+  @Field(() => String, { nullable: false, description: 'Last name' })
   lastName: string;
-  @Prop({})
+
   @Field(() => String, { nullable: false })
   name: string;
+
+  @Prop({
+    type: Date,
+    required: false,
+  })
   @Field(() => Date, { nullable: true })
   birthdate: Date;
 
@@ -36,6 +52,7 @@ export class Employee extends BaseDocumentEntity {
   })
   @Field(() => ImageEntity, { nullable: true })
   avatar: ImageEntity;
+
   @Prop({
     type: String,
     required: true,
@@ -56,6 +73,10 @@ export class Employee extends BaseDocumentEntity {
   @Field(() => GraphQLCurrency, { nullable: true })
   salaryCurrency: string;
 
+  @Prop({
+    type: AddressSchema,
+    required: false,
+  })
   @Field(() => AddressEntity, { nullable: true })
   address: AddressEntity;
 }

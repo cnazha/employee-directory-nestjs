@@ -75,8 +75,12 @@ type Employee {
   birthdate: DateTime
   createdAt: DateTime
   email: EmailAddress!
+
+  """First name"""
   firstName: String!
   id: ID!
+
+  """Last name"""
   lastName: String!
   name: String!
   phone: PhoneNumber!
