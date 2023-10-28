@@ -1,8 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseDocumentEntity } from './base.document';
 import { GraphQLCountryCode, GraphQLPostalCode } from 'graphql-scalars';
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { GeoCoordinatesEntity } from './geo-coordinates.entity';
+import { HydratedDocument } from 'mongoose';
 
 @Schema({
   _id: false,
@@ -54,3 +55,6 @@ export class AddressEntity extends BaseDocumentEntity {
   @Field(() => GeoCoordinatesEntity, { nullable: true })
   coordinates: GeoCoordinatesEntity;
 }
+
+export type AddressDocument = HydratedDocument<AddressEntity>;
+export const AddressSchema = SchemaFactory.createForClass(AddressEntity);
