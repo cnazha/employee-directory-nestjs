@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "doc:generate": "compodoc -p tsconfig.json -s"
   },
   "dependencies": {
     "@apollo/server": "^4.9.4",
@@ -29,6 +30,7 @@
     "@nestjs/mongoose": "^10.0.1",
     "@nestjs/platform-express": "^9.0.0",
     "graphql": "^16.8.1",
+    "moment": "^2.29.4",
     "mongoose": "^7.6.3",
     "mongoose-paginate-v2": "^1.7.4",
     "reflect-metadata": "^0.1.13",
@@ -36,6 +38,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.22",
     "@graphql-tools/graphql-file-loader": "^8.0.0",
     "@graphql-tools/load": "^8.0.0",
     "@nestjs/cli": "^9.0.0",
