@@ -13,6 +13,11 @@ type CreateDepartmentMutationResponse implements MutationResponse {
   success: Boolean!
 }
 
+input CreateEmployeeInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -36,10 +41,18 @@ type DepartmentsListResponse {
   totalPages: Int!
 }
 
+type Employee {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Mutation {
   createDepartment(createDepartmentInput: CreateDepartmentInput!): CreateDepartmentMutationResponse!
+  createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   removeDepartment(id: String!): RemoveDepartmentMutationResponse!
+  removeEmployee(id: Int!): Employee!
   updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): UpdateDepartmentMutationResponse!
+  updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
 }
 
 interface MutationResponse {
@@ -50,6 +63,8 @@ interface MutationResponse {
 type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
+  employee(id: Int!): Employee!
+  employees: [Employee!]!
 }
 
 type RemoveDepartmentMutationResponse implements MutationResponse {
@@ -69,4 +84,10 @@ type UpdateDepartmentMutationResponse implements MutationResponse {
   item: Department
   message: String
   success: Boolean!
+}
+
+input UpdateEmployeeInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
