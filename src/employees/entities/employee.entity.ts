@@ -81,7 +81,7 @@ export class Employee extends BaseDocumentEntity {
   address: AddressEntity;
 }
 
-const EmployeeSchema = SchemaFactory.createForClass(Employee);
+export const EmployeeSchema = SchemaFactory.createForClass(Employee);
 
 export type EmployeeDocument = HydratedDocument<Employee>;
 

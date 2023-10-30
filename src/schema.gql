@@ -35,6 +35,12 @@ input CreateEmployeeInput {
   email: EmailAddress!
 }
 
+type CreateEmployeeMutationResponse implements MutationResponse {
+  item: Employee
+  message: String
+  success: Boolean!
+}
+
 """
 A field whose value is a Currency: https://en.wikipedia.org/wiki/ISO_4217.
 """
@@ -88,6 +94,15 @@ type Employee {
   updatedAt: DateTime
 }
 
+type EmployeesListResponse {
+  hasNextPage: Boolean
+  items: [Employee!]
+  page: PositiveInt!
+  success: Boolean!
+  totalCount: NonNegativeInt!
+  totalPages: NonNegativeInt!
+}
+
 type GeoCoordinatesEntity {
   latitude: Latitude!
   longitude: Longitude!
@@ -125,11 +140,11 @@ scalar Longitude
 
 type Mutation {
   createDepartment(createDepartmentInput: CreateDepartmentInput!): CreateDepartmentMutationResponse!
-  createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
+  createEmployee(createEmployeeInput: CreateEmployeeInput!): CreateEmployeeMutationResponse!
   removeDepartment(id: String!): RemoveDepartmentMutationResponse!
-  removeEmployee(id: String!): Employee!
+  removeEmployee(id: String!): RemoveEmployeeMutationResponse!
   updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): UpdateDepartmentMutationResponse!
-  updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
+  updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): UpdateEmployeeMutationResponse!
 }
 
 interface MutationResponse {
@@ -157,11 +172,17 @@ type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
   employee(id: String!): Employee!
-  employees: [Employee!]!
+  employees: [EmployeesListResponse!]!
 }
 
 type RemoveDepartmentMutationResponse implements MutationResponse {
   item: Department
+  message: String
+  success: Boolean!
+}
+
+type RemoveEmployeeMutationResponse implements MutationResponse {
+  item: Employee
   message: String
   success: Boolean!
 }
@@ -195,4 +216,10 @@ input UpdateEmployeeInput {
 
   """Employee id"""
   id: UUID!
+}
+
+type UpdateEmployeeMutationResponse implements MutationResponse {
+  item: Employee
+  message: String
+  success: Boolean!
 }

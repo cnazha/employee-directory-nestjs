@@ -3,19 +3,25 @@ import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeInput } from './dto/create-employee.input';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
+import {
+  CreateEmployeeMutationResponse,
+  EmployeesListResponse,
+  RemoveEmployeeMutationResponse,
+  UpdateEmployeeMutationResponse,
+} from './employees.responses';
 
 @Resolver(() => Employee)
 export class EmployeesResolver {
   constructor(private readonly employeesService: EmployeesService) {}
 
-  @Mutation(() => Employee)
+  @Mutation(() => CreateEmployeeMutationResponse)
   createEmployee(
     @Args('createEmployeeInput') createEmployeeInput: CreateEmployeeInput,
   ) {
     return this.employeesService.create(createEmployeeInput);
   }
 
-  @Query(() => [Employee], { name: 'employees' })
+  @Query(() => [EmployeesListResponse], { name: 'employees' })
   findAll() {
     return this.employeesService.findAll();
   }
@@ -25,7 +31,7 @@ export class EmployeesResolver {
     return this.employeesService.findOne(id);
   }
 
-  @Mutation(() => Employee)
+  @Mutation(() => UpdateEmployeeMutationResponse)
   updateEmployee(
     @Args('updateEmployeeInput') updateEmployeeInput: UpdateEmployeeInput,
   ) {
@@ -35,7 +41,7 @@ export class EmployeesResolver {
     );
   }
 
-  @Mutation(() => Employee)
+  @Mutation(() => RemoveEmployeeMutationResponse)
   removeEmployee(@Args('id', { type: () => String }) id: string) {
     return this.employeesService.remove(id);
   }
