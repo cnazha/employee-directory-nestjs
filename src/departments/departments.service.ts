@@ -3,11 +3,9 @@ import { CreateDepartmentInput } from './dto/create-department.input';
 import { UpdateDepartmentInput } from './dto/update-department.input';
 import { Department } from './entities/department.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import {
-  IPaginatedType,
-  PaginationArgs,
-} from '../common/types/pagination.type';
+import { IPaginatedType } from '../common/pagination/pagination.type';
 import { PaginateModel } from 'mongoose';
+import { PaginationArgs } from '../common/pagination/pagination.input';
 
 @Injectable()
 export class DepartmentsService {
@@ -23,11 +21,12 @@ export class DepartmentsService {
     filter?: { name?: string },
     pagination?: PaginationArgs,
   ): Promise<IPaginatedType<Department>> {
-    const name = filter?.name || '';
-    const query = {
-      //name: { $regex: filter.name, $options: 'i' },
-    };
+    const name = filter?.name;
+    const query = {};
 
+    if (name) {
+      query['$text'] = { $search: name };
+    }
     const result = await this.departmentModel.paginate(query, {
       page: pagination.page,
       limit: pagination.limit,

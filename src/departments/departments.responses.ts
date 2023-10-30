@@ -1,7 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { SingleMutationResponse } from '../common/responses/single-mutation.response';
 import { Department } from './entities/department.entity';
-import { Paginated } from '../common/types/pagination.type';
+
+import { Paginated } from '../common/pagination/pagination.generic';
 
 @ObjectType()
 export class DepartmentsListResponse extends Paginated(Department) {

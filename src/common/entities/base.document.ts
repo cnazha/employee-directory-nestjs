@@ -1,6 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { documentIDGenerator } from '../helpers/document-id-generator';
+import { GraphQLDateTime } from 'graphql-scalars';
 
 @Schema({
   _id: false,
@@ -25,9 +26,9 @@ export class BaseDocumentEntity {
   @Field(() => ID, { nullable: false })
   id: string;
 
-  @Field(() => Date, { nullable: true })
+  @Field(() => GraphQLDateTime, { nullable: true })
   createdAt: Date;
 
-  @Field(() => Date, { nullable: true })
+  @Field(() => GraphQLDateTime, { nullable: true })
   updatedAt: Date;
 }
