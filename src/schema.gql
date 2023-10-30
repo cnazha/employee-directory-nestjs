@@ -115,6 +115,11 @@ type Employee implements UserInterface {
   updatedAt: DateTime
 }
 
+input EmployeeFilterInput {
+  name: String
+  status: EmployeeStatus
+}
+
 enum EmployeeStatus {
   ACTIVE
   INACTIVE
@@ -183,6 +188,11 @@ interface MutationResponse {
 """Integers that will have a value of 0 or more."""
 scalar NonNegativeInt
 
+input PaginationInput {
+  limit: PositiveInt = 10
+  page: PositiveInt = 1
+}
+
 """
 A field whose value conforms to the standard E.164 format as specified in: https://en.wikipedia.org/wiki/E.164. Basically this is +17895551234.
 """
@@ -200,7 +210,7 @@ type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
   employee(id: String!): Employee!
-  employees: EmployeesListResponse!
+  employees(filter: EmployeeFilterInput!, pagination: PaginationInput!): EmployeesListResponse!
 }
 
 type RemoveDepartmentMutationResponse implements MutationResponse {

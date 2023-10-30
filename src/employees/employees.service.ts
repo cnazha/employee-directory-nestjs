@@ -9,6 +9,7 @@ import {
   IPaginatedType,
   PaginationArgs,
 } from '../common/types/pagination.type';
+import { EmployeeStatus } from './types/employee-status.enum';
 
 @Injectable()
 export class EmployeesService {
@@ -21,13 +22,24 @@ export class EmployeesService {
   }
 
   async findAll(
-    filter?: { name?: string },
+    filter?: {
+      name?: string;
+      status?: EmployeeStatus;
+    },
     pagination?: PaginationArgs,
   ): Promise<IPaginatedType<Employee>> {
-    const name = filter?.name || '';
-    const query = {
-      //name: { $regex: filter.name, $options: 'i' },
-    };
+    const name = filter?.name;
+    const status = filter?.status;
+    const query = {};
+
+    if (name) {
+      query['$text'] = {
+        $search: name,
+      };
+    }
+    if (status) {
+      query['status'] = status;
+    }
 
     const result = await this.employeeModel.paginate(query, {
       page: pagination.page,

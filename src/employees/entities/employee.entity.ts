@@ -134,3 +134,5 @@ EmployeeSchema.pre<any>(
     next();
   },
 );
+
+EmployeeSchema.index({ name: 'text' });
