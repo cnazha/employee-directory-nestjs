@@ -9,6 +9,7 @@ import {
   RemoveEmployeeMutationResponse,
   UpdateEmployeeMutationResponse,
 } from './employees.responses';
+import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
 
 @Resolver(() => Employee)
 export class EmployeesResolver {
@@ -37,12 +38,34 @@ export class EmployeesResolver {
   }
 
   @Mutation(() => UpdateEmployeeMutationResponse)
-  updateEmployee(
+  async updateEmployee(
     @Args('updateEmployeeInput') updateEmployeeInput: UpdateEmployeeInput,
   ) {
-    return this.employeesService.update(
-      updateEmployeeInput.id,
-      updateEmployeeInput,
+    try {
+      const updatedEmployee = await this.employeesService.update(
+        updateEmployeeInput.id,
+        updateEmployeeInput,
+      );
+      return {
+        success: true,
+        message: 'Employee updated successfully',
+        item: updatedEmployee,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        message: e.message,
+      };
+    }
+  }
+  @Mutation(() => UpdateEmployeeMutationResponse)
+  updateEmployeeStatus(
+    @Args('updateEmployeeStatusInput')
+    updateEmployeeStatusInput: UpdateEmployeeStatusInput,
+  ) {
+    return this.employeesService.updateStatus(
+      updateEmployeeStatusInput.id,
+      updateEmployeeStatusInput,
     );
   }
 
