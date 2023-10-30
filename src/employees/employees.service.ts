@@ -87,6 +87,6 @@ export class EmployeesService {
   }
 
   remove(id: string) {
-    return `This action removes a #${id} employee`;
+    return this.employeeModel.findByIdAndDelete(id);
   }
 }

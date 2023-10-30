@@ -104,6 +104,18 @@ export class EmployeesResolver {
 
   @Mutation(() => RemoveEmployeeMutationResponse)
   removeEmployee(@Args('id', { type: () => String }) id: string) {
-    return this.employeesService.remove(id);
+    try {
+      const item = this.employeesService.remove(id);
+      return {
+        success: true,
+        message: 'Employee removed successfully',
+        item,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        message: e.message,
+      };
+    }
   }
 }
