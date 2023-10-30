@@ -31,6 +31,8 @@ type CreateDepartmentMutationResponse implements MutationResponse {
 }
 
 input CreateEmployeeInput {
+  avatar: ImageInput
+
   """Employee birthdate"""
   birthdate: Date
   department: String
@@ -40,6 +42,7 @@ input CreateEmployeeInput {
 
   """Employee first name"""
   firstName: String!
+  jobTitle: String
 
   """Employee last name"""
   lastName: String!
@@ -107,6 +110,7 @@ type Employee implements UserInterface {
   """First name"""
   firstName: String!
   id: ID!
+  jobTitle: String
 
   """Last name"""
   lastName: String!
@@ -145,7 +149,7 @@ type GeoCoordinatesEntity {
 }
 
 type ImageEntity {
-  """Image aspect ratio"""
+  """Image aspect ratio from width / height"""
   aspectRatio: Float
   createdAt: DateTime
 
@@ -156,6 +160,20 @@ type ImageEntity {
   """Image path on Firebase Bucket"""
   path: String!
   updatedAt: DateTime
+
+  """Public image URL"""
+  url: URL!
+
+  """Original image width"""
+  width: Float!
+}
+
+input ImageInput {
+  """Original image height"""
+  height: Float!
+
+  """Image path on Firebase Bucket"""
+  path: String!
 
   """Public image URL"""
   url: URL!
@@ -264,6 +282,8 @@ type UpdateDepartmentMutationResponse implements MutationResponse {
 }
 
 input UpdateEmployeeInput {
+  avatar: ImageInput
+
   """Employee birthdate"""
   birthdate: Date
   department: String
@@ -276,6 +296,7 @@ input UpdateEmployeeInput {
 
   """Employee id"""
   id: UUID!
+  jobTitle: String
 
   """Employee last name"""
   lastName: String

@@ -13,7 +13,7 @@ import {
   AddressEntity,
   AddressSchema,
 } from '../../common/entities/address.entity';
-import { ImageEntity, ImageSchema } from '../../common/entities/image.entity';
+import { ImageEntity, ImageSchema } from '../../common/images/image.entity';
 import { BaseDocumentEntity } from '../../common/entities/base.document';
 import { UserInterface } from '../../common/interfaces/user.interface';
 import { EmployeeStatus } from '../types/employee-status.enum';
@@ -111,6 +111,13 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
   })
   @Field(() => Department, { nullable: true })
   department?: Department | string;
+
+  @Prop({
+    type: String,
+    required: false,
+  })
+  @Field(() => String, { nullable: true })
+  jobTitle: string;
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);

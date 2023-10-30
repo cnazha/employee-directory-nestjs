@@ -5,6 +5,7 @@ import {
   GraphQLEmailAddress,
   GraphQLPhoneNumber,
 } from 'graphql-scalars';
+import { ImageInput } from '../../common/images/image.input';
 
 @InputType()
 export class CreateEmployeeInput {
@@ -27,4 +28,13 @@ export class CreateEmployeeInput {
     nullable: true,
   })
   department: string;
+  @Field(() => String, {
+    nullable: true,
+  })
+  jobTitle: string;
+
+  @Field(() => ImageInput, {
+    nullable: true,
+  })
+  avatar: ImageInput;
 }
