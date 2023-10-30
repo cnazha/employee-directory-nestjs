@@ -1,9 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import moment from 'moment';
+import * as moment from 'moment';
 import {
   GraphQLCurrency,
+  GraphQLDate,
   GraphQLEmailAddress,
   GraphQLPhoneNumber,
   GraphQLPositiveInt,
@@ -14,12 +15,17 @@ import {
 } from '../../common/entities/address.entity';
 import { ImageEntity, ImageSchema } from '../../common/entities/image.entity';
 import { BaseDocumentEntity } from '../../common/entities/base.document';
+import { UserInterface } from '../../common/interfaces/user.interface';
 
 @Schema({
   timestamps: true,
+  collection: 'employees',
+  virtuals: true,
 })
-@ObjectType()
-export class Employee extends BaseDocumentEntity {
+@ObjectType({
+  implements: () => [UserInterface],
+})
+export class Employee extends BaseDocumentEntity implements UserInterface {
   @Prop({
     type: String,
     required: true,
@@ -40,7 +46,10 @@ export class Employee extends BaseDocumentEntity {
     type: Date,
     required: false,
   })
-  @Field(() => Date, { nullable: true })
+  @Field(() => GraphQLDate, {
+    nullable: true,
+    description: 'Employee Birthdate - example 2000-01-20',
+  })
   birthdate: Date;
 
   @Field(() => GraphQLPositiveInt, { nullable: true })
