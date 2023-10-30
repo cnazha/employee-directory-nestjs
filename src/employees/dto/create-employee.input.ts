@@ -23,4 +23,8 @@ export class CreateEmployeeInput {
   birthdate: Date;
   @Field(() => GraphQLCurrency)
   salaryCurrency: string;
+  @Field(() => String, {
+    nullable: true,
+  })
+  department: string;
 }

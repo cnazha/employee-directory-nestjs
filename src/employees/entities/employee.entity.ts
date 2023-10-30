@@ -17,6 +17,7 @@ import { ImageEntity, ImageSchema } from '../../common/entities/image.entity';
 import { BaseDocumentEntity } from '../../common/entities/base.document';
 import { UserInterface } from '../../common/interfaces/user.interface';
 import { EmployeeStatus } from '../types/employee-status.enum';
+import { Department } from '../../departments/entities/department.entity';
 
 @Schema({
   timestamps: true,
@@ -101,6 +102,15 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
   })
   @Field(() => AddressEntity, { nullable: true })
   address: AddressEntity;
+
+  @Prop({
+    type: String,
+    required: false,
+    ref: 'Department',
+    autopopulate: true,
+  })
+  @Field(() => Department, { nullable: true })
+  department?: Department | string;
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);

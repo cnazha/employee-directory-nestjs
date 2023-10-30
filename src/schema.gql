@@ -33,6 +33,7 @@ type CreateDepartmentMutationResponse implements MutationResponse {
 input CreateEmployeeInput {
   """Employee birthdate"""
   birthdate: Date
+  department: String
 
   """Employee email address"""
   email: EmailAddress!
@@ -100,6 +101,7 @@ type Employee implements UserInterface {
   """Employee Birthdate - example 2000-01-20"""
   birthdate: Date
   createdAt: DateTime
+  department: Department
   email: EmailAddress!
 
   """First name"""
@@ -116,6 +118,8 @@ type Employee implements UserInterface {
 }
 
 input EmployeeFilterInput {
+  """Employee department"""
+  department: String
   name: String
   status: EmployeeStatus
 }
@@ -262,6 +266,7 @@ type UpdateDepartmentMutationResponse implements MutationResponse {
 input UpdateEmployeeInput {
   """Employee birthdate"""
   birthdate: Date
+  department: String
 
   """Employee email address"""
   email: EmailAddress

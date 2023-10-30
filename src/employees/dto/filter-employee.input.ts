@@ -12,4 +12,10 @@ export class EmployeeFilterInput {
     nullable: true,
   })
   status: EmployeeStatus;
+
+  @Field(() => String, {
+    nullable: true,
+    description: 'Employee department',
+  })
+  department?: string;
 }

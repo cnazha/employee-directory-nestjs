@@ -10,7 +10,12 @@ import * as paginate from 'mongoose-paginate-v2';
     MongooseModule.forFeatureAsync([
       {
         name: Employee.name,
-        useFactory: () => EmployeeSchema.plugin(paginate),
+        useFactory: () => {
+          const schema = EmployeeSchema;
+          schema.plugin(paginate);
+          schema.plugin(require('mongoose-autopopulate'));
+          return schema;
+        },
       },
     ]),
   ],

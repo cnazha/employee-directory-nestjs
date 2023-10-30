@@ -25,6 +25,7 @@ export class EmployeesService {
     filter?: {
       name?: string;
       status?: EmployeeStatus;
+      department?: string;
     },
     pagination?: PaginationArgs,
     sort?: {
@@ -35,6 +36,7 @@ export class EmployeesService {
   ): Promise<IPaginatedType<Employee>> {
     const name = filter?.name;
     const status = filter?.status;
+    const department = filter?.department;
     const query = {};
 
     if (name) {
@@ -44,6 +46,10 @@ export class EmployeesService {
     }
     if (status) {
       query['status'] = status;
+    }
+
+    if (department) {
+      query['department'] = department;
     }
 
     const result = await this.employeeModel.paginate(query, {
