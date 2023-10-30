@@ -111,7 +111,14 @@ type Employee implements UserInterface {
   name: String!
   phone: PhoneNumber!
   salaryCurrency: Currency
+  status: EmployeeStatus!
   updatedAt: DateTime
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
 }
 
 type EmployeesListResponse {
@@ -165,6 +172,7 @@ type Mutation {
   removeEmployee(id: String!): RemoveEmployeeMutationResponse!
   updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): UpdateDepartmentMutationResponse!
   updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): UpdateEmployeeMutationResponse!
+  updateEmployeeStatus(updateEmployeeStatusInput: UpdateEmployeeStatusInput!): UpdateEmployeeMutationResponse!
 }
 
 interface MutationResponse {
@@ -248,13 +256,20 @@ input UpdateEmployeeInput {
 
   """Employee phone number"""
   phone: PhoneNumber
-  salaryCurrency: Currency
 }
 
 type UpdateEmployeeMutationResponse implements MutationResponse {
   item: Employee
   message: String
   success: Boolean!
+}
+
+input UpdateEmployeeStatusInput {
+  """Employee id"""
+  id: UUID!
+
+  """Employee status"""
+  status: EmployeeStatus!
 }
 
 interface UserInterface {

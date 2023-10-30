@@ -16,6 +16,7 @@ import {
 import { ImageEntity, ImageSchema } from '../../common/entities/image.entity';
 import { BaseDocumentEntity } from '../../common/entities/base.document';
 import { UserInterface } from '../../common/interfaces/user.interface';
+import { EmployeeStatus } from '../types/employee-status.enum';
 
 @Schema({
   timestamps: true,
@@ -39,6 +40,10 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
   @Field(() => String, { nullable: false, description: 'Last name' })
   lastName: string;
 
+  @Prop({
+    type: String,
+    required: false,
+  })
   @Field(() => String, { nullable: false })
   name: string;
 
@@ -83,6 +88,14 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
   salaryCurrency: string;
 
   @Prop({
+    type: String,
+    enum: EmployeeStatus,
+    default: EmployeeStatus.INACTIVE,
+  })
+  @Field(() => EmployeeStatus, { defaultValue: EmployeeStatus.INACTIVE })
+  status: EmployeeStatus;
+
+  @Prop({
     type: AddressSchema,
     required: false,
   })
@@ -94,15 +107,27 @@ export const EmployeeSchema = SchemaFactory.createForClass(Employee);
 
 export type EmployeeDocument = HydratedDocument<Employee>;
 
-EmployeeSchema.pre<EmployeeDocument>('save', function (next) {
-  // Update the 'name' field based on 'firstName' and 'lastName'
-  this.name = `${this.firstName} ${this.lastName}`;
-  next();
-});
-
 EmployeeSchema.virtual('age').get(function (this: EmployeeDocument) {
   const birthdate = moment(this.birthdate);
   const currentDate = moment();
   const age = currentDate.diff(birthdate, 'years');
   return age;
+});
+
+EmployeeSchema.pre<EmployeeDocument>('save', function (next) {
+  if (this.isModified('firstName') || this.isModified('lastName')) {
+    this.name = `${this.firstName} ${this.lastName}`;
+  }
+  next();
+});
+
+EmployeeSchema.pre<any>('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate();
+  if (update.firstName || update.lastName) {
+    const doc = await this.model.findOne(this.getQuery());
+    const firstName = update.firstName || doc.firstName;
+    const lastName = update.lastName || doc.lastName;
+    this._update.name = `${firstName} ${lastName}`;
+  }
+  next();
 });

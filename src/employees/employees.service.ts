@@ -4,6 +4,7 @@ import { UpdateEmployeeInput } from './dto/update-employee.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { Employee } from './entities/employee.entity';
 import { Model } from 'mongoose';
+import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
 
 @Injectable()
 export class EmployeesService {
@@ -23,7 +24,15 @@ export class EmployeesService {
   }
 
   update(id: string, updateEmployeeInput: UpdateEmployeeInput) {
-    return `This action updates a #${id} employee`;
+    return this.employeeModel.findByIdAndUpdate(id, updateEmployeeInput, {
+      new: true,
+    });
+  }
+
+  updateStatus(id: string, updateStatus: UpdateEmployeeStatusInput) {
+    return this.employeeModel.findByIdAndUpdate(id, updateStatus, {
+      new: true,
+    });
   }
 
   remove(id: string) {
