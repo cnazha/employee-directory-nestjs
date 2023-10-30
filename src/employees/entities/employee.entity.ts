@@ -121,13 +121,16 @@ EmployeeSchema.pre<EmployeeDocument>('save', function (next) {
   next();
 });
 
-EmployeeSchema.pre<any>('findOneAndUpdate', async function (next) {
-  const update = this.getUpdate();
-  if (update.firstName || update.lastName) {
-    const doc = await this.model.findOne(this.getQuery());
-    const firstName = update.firstName || doc.firstName;
-    const lastName = update.lastName || doc.lastName;
-    this._update.name = `${firstName} ${lastName}`;
-  }
-  next();
-});
+EmployeeSchema.pre<any>(
+  ['findOneAndUpdate', 'updateOne'],
+  async function (next) {
+    const update = this.getUpdate();
+    if (update.firstName || update.lastName) {
+      const doc = await this.model.findOne(this.getQuery());
+      const firstName = update.firstName || doc.firstName;
+      const lastName = update.lastName || doc.lastName;
+      this._update.name = `${firstName} ${lastName}`;
+    }
+    next();
+  },
+);

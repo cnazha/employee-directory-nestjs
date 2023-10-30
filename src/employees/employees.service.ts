@@ -3,24 +3,51 @@ import { CreateEmployeeInput } from './dto/create-employee.input';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { Employee } from './entities/employee.entity';
-import { Model } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
+import {
+  IPaginatedType,
+  PaginationArgs,
+} from '../common/types/pagination.type';
 
 @Injectable()
 export class EmployeesService {
   constructor(
-    @InjectModel(Employee.name) private readonly employeeModel: Model<Employee>,
+    @InjectModel(Employee.name)
+    private readonly employeeModel: PaginateModel<Employee>,
   ) {}
   create(createEmployeeInput: CreateEmployeeInput) {
     return this.employeeModel.create(createEmployeeInput);
   }
 
-  findAll() {
-    return `This action returns all employees`;
+  async findAll(
+    filter?: { name?: string },
+    pagination?: PaginationArgs,
+  ): Promise<IPaginatedType<Employee>> {
+    const name = filter?.name || '';
+    const query = {
+      //name: { $regex: filter.name, $options: 'i' },
+    };
+
+    const result = await this.employeeModel.paginate(query, {
+      page: pagination.page,
+      limit: pagination.limit,
+      collation: {
+        locale: 'en',
+      },
+    });
+
+    return {
+      items: result.docs,
+      totalCount: result.totalDocs,
+      hasNextPage: result.hasNextPage,
+      page: result.page,
+      totalPages: result.totalPages,
+    };
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} employee`;
+    return this.employeeModel.findById(id);
   }
 
   update(id: string, updateEmployeeInput: UpdateEmployeeInput) {

@@ -200,7 +200,7 @@ type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
   employee(id: String!): Employee!
-  employees: [EmployeesListResponse!]!
+  employees: EmployeesListResponse!
 }
 
 type RemoveDepartmentMutationResponse implements MutationResponse {

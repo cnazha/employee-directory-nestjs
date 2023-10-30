@@ -27,9 +27,25 @@ export class EmployeesResolver {
     };
   }
 
-  @Query(() => [EmployeesListResponse], { name: 'employees' })
-  findAll() {
-    return this.employeesService.findAll();
+  @Query(() => EmployeesListResponse, { name: 'employees' })
+  async findAll() {
+    try {
+      const data = await this.employeesService.findAll(
+        {},
+        { page: 1, limit: 10 },
+      );
+      return {
+        ...data,
+        success: true,
+      };
+    } catch (e) {
+      return {
+        items: [],
+        totalCount: 0,
+        success: false,
+        message: e.message,
+      };
+    }
   }
 
   @Query(() => Employee, { name: 'employee' })
