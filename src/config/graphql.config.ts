@@ -4,6 +4,8 @@ import { join } from 'path';
 import {
   CountryCodeResolver,
   CurrencyResolver,
+  DateResolver,
+  DateTimeResolver,
   EmailAddressResolver,
   LatitudeResolver,
   LongitudeResolver,
@@ -33,5 +35,7 @@ export const graphqlConfig: ApolloDriverConfig = {
     URL: URLResolver,
     Latitude: LatitudeResolver,
     Longitude: LongitudeResolver,
+    Date: DateResolver,
+    DateTime: DateTimeResolver,
   },
 };
