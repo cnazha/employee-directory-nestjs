@@ -13,6 +13,7 @@ import * as paginate from 'mongoose-paginate-v2';
         useFactory: () => {
           const schema = EmployeeSchema;
           schema.plugin(paginate);
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
           schema.plugin(require('mongoose-autopopulate'));
           return schema;
         },
