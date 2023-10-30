@@ -3,11 +3,9 @@ import { CreateDepartmentInput } from './dto/create-department.input';
 import { UpdateDepartmentInput } from './dto/update-department.input';
 import { Department } from './entities/department.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import {
-  IPaginatedType,
-  PaginationArgs,
-} from '../common/types/pagination.type';
+import { IPaginatedType } from '../common/pagination/pagination.type';
 import { PaginateModel } from 'mongoose';
+import { PaginationArgs } from '../common/pagination/pagination.input';
 
 @Injectable()
 export class DepartmentsService {

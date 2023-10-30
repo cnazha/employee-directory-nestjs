@@ -1,19 +1,7 @@
 import { Type } from '@nestjs/common';
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLNonNegativeInt, GraphQLPositiveInt } from 'graphql-scalars';
-
-export interface IPaginatedType<T> {
-  items: T[];
-  page: number;
-  totalCount: number;
-  hasNextPage: boolean;
-  totalPages?: number;
-}
-
-export type PaginationArgs = {
-  page: number;
-  limit: number;
-};
+import { IPaginatedType } from './pagination.type';
 
 export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
   @ObjectType({ isAbstract: true })
@@ -33,20 +21,6 @@ export function Paginated<T>(classRef: Type<T>): Type<IPaginatedType<T>> {
     @Field(() => Boolean, { nullable: true, defaultValue: false })
     hasNextPage: boolean;
   }
+
   return PaginatedType as Type<IPaginatedType<T>>;
-}
-
-@InputType()
-export class PaginationInput {
-  @Field(() => GraphQLPositiveInt, {
-    nullable: true,
-    defaultValue: 1,
-  })
-  page: number;
-
-  @Field(() => GraphQLPositiveInt, {
-    nullable: true,
-    defaultValue: 10,
-  })
-  limit: number;
 }

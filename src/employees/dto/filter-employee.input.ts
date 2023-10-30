@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { EmployeeStatus } from '../types/employee-status.enum';
 
-@InputType()
+@InputType({})
 export class EmployeeFilterInput {
   @Field(() => String, {
     nullable: true,

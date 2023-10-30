@@ -5,11 +5,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Employee } from './entities/employee.entity';
 import { PaginateModel } from 'mongoose';
 import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
-import {
-  IPaginatedType,
-  PaginationArgs,
-} from '../common/types/pagination.type';
+import { IPaginatedType } from '../common/pagination/pagination.type';
 import { EmployeeStatus } from './types/employee-status.enum';
+import { PaginationArgs } from '../common/pagination/pagination.input';
+
+import { SortOrder } from '../common/sort/sort.input';
 
 @Injectable()
 export class EmployeesService {
@@ -27,6 +27,11 @@ export class EmployeesService {
       status?: EmployeeStatus;
     },
     pagination?: PaginationArgs,
+    sort?: {
+      name?: string;
+      createdAt?: SortOrder;
+      updatedAt?: SortOrder;
+    },
   ): Promise<IPaginatedType<Employee>> {
     const name = filter?.name;
     const status = filter?.status;
@@ -44,6 +49,7 @@ export class EmployeesService {
     const result = await this.employeeModel.paginate(query, {
       page: pagination.page,
       limit: pagination.limit,
+      sort: sort,
       collation: {
         locale: 'en',
       },

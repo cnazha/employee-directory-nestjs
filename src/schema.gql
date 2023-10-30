@@ -210,7 +210,7 @@ type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
   employee(id: String!): Employee!
-  employees(filter: EmployeeFilterInput!, pagination: PaginationInput!): EmployeesListResponse!
+  employees(filter: EmployeeFilterInput, pagination: PaginationInput, sort: SortEmployeeInput): EmployeesListResponse!
 }
 
 type RemoveDepartmentMutationResponse implements MutationResponse {
@@ -223,6 +223,17 @@ type RemoveEmployeeMutationResponse implements MutationResponse {
   item: Employee
   message: String
   success: Boolean!
+}
+
+input SortEmployeeInput {
+  createdAt: SortOrder = DESC
+  name: SortOrder
+  updatedAt: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
 }
 
 """

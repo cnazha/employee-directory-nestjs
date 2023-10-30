@@ -10,8 +10,9 @@ import {
   UpdateEmployeeMutationResponse,
 } from './employees.responses';
 import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
-import { PaginationInput } from '../common/types/pagination.type';
 import { EmployeeFilterInput } from './dto/filter-employee.input';
+import { SortEmployeeInput } from './dto/sort-employee.input';
+import { PaginationInput } from '../common/pagination/pagination.input';
 
 @Resolver(() => Employee)
 export class EmployeesResolver {
@@ -31,12 +32,25 @@ export class EmployeesResolver {
 
   @Query(() => EmployeesListResponse, { name: 'employees' })
   async findAll(
-    @Args('pagination') pagination: PaginationInput,
-    @Args('filter') filter: EmployeeFilterInput,
+    @Args('pagination', {
+      nullable: true,
+    })
+    pagination: PaginationInput,
+    @Args('filter', {
+      nullable: true,
+    })
+    filter: EmployeeFilterInput,
+    @Args('sort', {
+      nullable: true,
+    })
+    sort?: SortEmployeeInput,
   ) {
     try {
-      console.log(pagination, filter);
-      const data = await this.employeesService.findAll(filter, pagination);
+      const data = await this.employeesService.findAll(
+        filter,
+        pagination,
+        sort,
+      );
       return {
         ...data,
         success: true,
