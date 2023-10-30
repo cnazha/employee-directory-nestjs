@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEmployeeInput } from './dto/create-employee.input';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
+import { InjectModel } from '@nestjs/mongoose';
+import { Employee } from './entities/employee.entity';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class EmployeesService {
+  constructor(
+    @InjectModel(Employee.name) private readonly employeeModel: Model<Employee>,
+  ) {}
   create(createEmployeeInput: CreateEmployeeInput) {
-    return 'This action adds a new employee';
+    return this.employeeModel.create(createEmployeeInput);
   }
 
   findAll() {

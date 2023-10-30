@@ -15,10 +15,15 @@ export class EmployeesResolver {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Mutation(() => CreateEmployeeMutationResponse)
-  createEmployee(
+  async createEmployee(
     @Args('createEmployeeInput') createEmployeeInput: CreateEmployeeInput,
   ) {
-    return this.employeesService.create(createEmployeeInput);
+    const employee = await this.employeesService.create(createEmployeeInput);
+    return {
+      success: true,
+      message: 'Employee created successfully',
+      item: employee,
+    };
   }
 
   @Query(() => [EmployeesListResponse], { name: 'employees' })
