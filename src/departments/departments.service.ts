@@ -21,11 +21,12 @@ export class DepartmentsService {
     filter?: { name?: string },
     pagination?: PaginationArgs,
   ): Promise<IPaginatedType<Department>> {
-    const name = filter?.name || '';
-    const query = {
-      //name: { $regex: filter.name, $options: 'i' },
-    };
+    const name = filter?.name;
+    const query = {};
 
+    if (name) {
+      query['$text'] = { $search: name };
+    }
     const result = await this.departmentModel.paginate(query, {
       page: pagination.page,
       limit: pagination.limit,
