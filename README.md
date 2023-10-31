@@ -4,8 +4,13 @@ This is the backend for the Employee Directory application. It is built using Ne
 
 
 ## Table of Contents
+* [Demo](#demo)
+* [Concepts used](#concept)
 * [Installation](#installation)
 * [Running the app](#running-the-app)
+* [Docker](#docker)
+* [Authentication](#authentication)
+* [Documentation](#documentation)
 * [Questions](#questions)
 * [License](#license)
 
@@ -13,6 +18,20 @@ This is the backend for the Employee Directory application. It is built using Ne
 ## Demo
 > Development Endpoint - introspection enabled
 >[https://employee-directory.nazha.dev/graphql](https://employee-directory.nazha.dev/graphql)
+
+
+## Concepts used
+
+- [x] Graphql: Field Resolvers - enums - scalars - interfaces - directives 
+- [x] MongoDB: Schema - virtuals - getters - indexes - statics - methods - hooks - text search
+- [x] Nest.js: Guards - Mapped Types - Named config - Controllers - Generics
+- [x] Docker: Dockerfile multi-stage builds - docker-compose - env files - bash scripts
+- [x] Testing: E2E - Unit on resolver and service level
+- [x] Documentation: Compodoc - GraphQL Code Generator
+- [x] CI/CD: Github Actions - Docker Hub
+
+* Not implemented (suggestions): Dataloader - Redis cache - Firebase integration - Rate Limiting - Class Validators
+
 
 ## Installation
 
@@ -50,6 +69,9 @@ $ docker-compose up -f docker-compose-development.yml
 $ docker-compose up
 ```
 
+## Authentication
+Use the following header
+> Authorization: Bearer 1234567890
 
 ## Documentation
 > Documentation is generated using [Compodoc](https://compodoc.app/)

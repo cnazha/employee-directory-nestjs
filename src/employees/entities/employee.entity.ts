@@ -85,7 +85,11 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
   @Prop({
     type: String,
   })
-  @Field(() => GraphQLCurrency, { nullable: true })
+  @Field(() => GraphQLCurrency, {
+    nullable: true,
+    deprecationReason:
+      'This field has been deprecated in favor of the Accounting Service',
+  })
   salaryCurrency: string;
 
   @Prop({
@@ -107,7 +111,8 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
     type: String,
     required: false,
     ref: 'Department',
-    autopopulate: true,
+    // Replaced with resolve field for demo purposes
+    //autopopulate: true,
   })
   @Field(() => Department, { nullable: true })
   department?: Department | string;
@@ -156,3 +161,15 @@ EmployeeSchema.pre<EmployeeDocument & any>(
 );
 
 EmployeeSchema.index({ name: 'text' });
+EmployeeSchema.index({ email: 1 }, { unique: true });
+EmployeeSchema.index({ phone: 1 }, { unique: true });
+EmployeeSchema.index({
+  department: 1,
+  status: 1,
+  name: 1,
+  email: 1,
+  phone: 1,
+  jobTitle: 1,
+  createdAt: -1,
+  updatedAt: -1,
+});
