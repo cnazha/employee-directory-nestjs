@@ -13,8 +13,11 @@ import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
 import { EmployeeFilterInput } from './dto/filter-employee.input';
 import { SortEmployeeInput } from './dto/sort-employee.input';
 import { PaginationInput } from '../common/pagination/pagination.input';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @Resolver(() => Employee)
+@UseGuards(AuthGuard)
 export class EmployeesResolver {
   constructor(private readonly employeesService: EmployeesService) {}
 

@@ -9,8 +9,11 @@ import {
   RemoveDepartmentMutationResponse,
   UpdateDepartmentMutationResponse,
 } from './departments.responses';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @Resolver(() => Department)
+@UseGuards(AuthGuard)
 export class DepartmentsResolver {
   constructor(private readonly departmentsService: DepartmentsService) {}
 
