@@ -6,6 +6,9 @@ This is the backend for the Employee Directory application. It is built using Ne
 ## Table of Contents
 * [Installation](#installation)
 * [Running the app](#running-the-app)
+* [Docker](#docker)
+* [Authentication](#authentication)
+* [Documentation](#documentation)
 * [Questions](#questions)
 * [License](#license)
 
@@ -13,6 +16,8 @@ This is the backend for the Employee Directory application. It is built using Ne
 ## Demo
 > Development Endpoint - introspection enabled
 >[https://employee-directory.nazha.dev/graphql](https://employee-directory.nazha.dev/graphql)
+
+
 
 ## Installation
 
@@ -50,6 +55,9 @@ $ docker-compose up -f docker-compose-development.yml
 $ docker-compose up
 ```
 
+## Authentication
+Use the following header
+> Authorization: Bearer 1234567890
 
 ## Documentation
 > Documentation is generated using [Compodoc](https://compodoc.app/)
