@@ -20,15 +20,24 @@ export class EmployeesService {
     private readonly departmentsService: DepartmentsService,
   ) {}
   async create(createEmployeeInput: CreateEmployeeInput) {
-    // Check if department exists
-    const department = createEmployeeInput.department;
-    if (department) {
-      const departmentExists = await this.departmentsService.exists(department);
-      if (!departmentExists) {
-        throw new Error('Department not found');
+    try {
+      // Check if department exists
+      const department = createEmployeeInput.department;
+      if (department) {
+        const departmentExists = await this.departmentsService.exists(
+          department,
+        );
+        if (!departmentExists) {
+          throw new Error('Department not found');
+        }
       }
+      return this.employeeModel.create(createEmployeeInput);
+    } catch (e) {
+      if (e.code === 11000) {
+        throw new Error('Employee already exists');
+      }
+      throw new Error(e);
     }
-    return this.employeeModel.create(createEmployeeInput);
   }
 
   async findAll(
@@ -85,17 +94,26 @@ export class EmployeesService {
   }
 
   async update(id: string, updateEmployeeInput: UpdateEmployeeInput) {
-    // Check if department exists
-    const department = updateEmployeeInput.department;
-    if (department) {
-      const departmentExists = await this.departmentsService.exists(department);
-      if (!departmentExists) {
-        throw new Error('Department not found');
+    try {
+      // Check if department exists
+      const department = updateEmployeeInput.department;
+      if (department) {
+        const departmentExists = await this.departmentsService.exists(
+          department,
+        );
+        if (!departmentExists) {
+          throw new Error('Department not found');
+        }
       }
+      return this.employeeModel.findByIdAndUpdate(id, updateEmployeeInput, {
+        new: true,
+      });
+    } catch (e) {
+      if (e.code === 11000) {
+        throw new Error('Employee data already exists');
+      }
+      throw new Error(e);
     }
-    return this.employeeModel.findByIdAndUpdate(id, updateEmployeeInput, {
-      new: true,
-    });
   }
 
   updateStatus(id: string, updateStatus: UpdateEmployeeStatusInput) {
