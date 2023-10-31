@@ -57,6 +57,10 @@ export class EmployeesResolver {
   async findAll(
     @Args('pagination', {
       nullable: true,
+      defaultValue: {
+        page: 1,
+        limit: 10,
+      },
     })
     pagination: PaginationInput,
     @Args('filter', {
@@ -79,6 +83,7 @@ export class EmployeesResolver {
         success: true,
       };
     } catch (e) {
+      console.log(e);
       return {
         items: [],
         totalCount: 0,
