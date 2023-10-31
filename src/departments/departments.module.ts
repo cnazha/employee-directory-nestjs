@@ -15,5 +15,6 @@ import * as paginate from 'mongoose-paginate-v2';
     ]),
   ],
   providers: [DepartmentsResolver, DepartmentsService],
+  exports: [DepartmentsService],
 })
 export class DepartmentsModule {}

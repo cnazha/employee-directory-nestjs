@@ -10,14 +10,24 @@ import { EmployeeStatus } from './types/employee-status.enum';
 import { PaginationArgs } from '../common/pagination/pagination.input';
 
 import { SortOrder } from '../common/sort/sort.input';
+import { DepartmentsService } from '../departments/departments.service';
 
 @Injectable()
 export class EmployeesService {
   constructor(
     @InjectModel(Employee.name)
     private readonly employeeModel: PaginateModel<Employee>,
+    private readonly departmentsService: DepartmentsService,
   ) {}
-  create(createEmployeeInput: CreateEmployeeInput) {
+  async create(createEmployeeInput: CreateEmployeeInput) {
+    // Check if department exists
+    const department = createEmployeeInput.department;
+    if (department) {
+      const departmentExists = await this.departmentsService.exists(department);
+      if (!departmentExists) {
+        throw new Error('Department not found');
+      }
+    }
     return this.employeeModel.create(createEmployeeInput);
   }
 
@@ -74,7 +84,15 @@ export class EmployeesService {
     return this.employeeModel.findById(id);
   }
 
-  update(id: string, updateEmployeeInput: UpdateEmployeeInput) {
+  async update(id: string, updateEmployeeInput: UpdateEmployeeInput) {
+    // Check if department exists
+    const department = updateEmployeeInput.department;
+    if (department) {
+      const departmentExists = await this.departmentsService.exists(department);
+      if (!departmentExists) {
+        throw new Error('Department not found');
+      }
+    }
     return this.employeeModel.findByIdAndUpdate(id, updateEmployeeInput, {
       new: true,
     });

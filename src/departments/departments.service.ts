@@ -67,4 +67,11 @@ export class DepartmentsService {
     if (!item) throw new Error('Department not found');
     return item;
   }
+
+  async exists(id: string) {
+    const departmentExists = await this.departmentModel.exists({
+      _id: id,
+    });
+    return !!departmentExists;
+  }
 }
