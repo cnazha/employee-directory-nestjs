@@ -31,7 +31,8 @@ export class EmployeesService {
           throw new Error('Department not found');
         }
       }
-      return this.employeeModel.create(createEmployeeInput);
+      const employee = await this.employeeModel.create(createEmployeeInput);
+      return employee;
     } catch (e) {
       if (e.code === 11000) {
         throw new Error('Employee already exists');

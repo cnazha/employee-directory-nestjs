@@ -21,7 +21,7 @@ import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
 import { EmployeeFilterInput } from './dto/filter-employee.input';
 import { SortEmployeeInput } from './dto/sort-employee.input';
 import { PaginationInput } from '../common/pagination/pagination.input';
-import { UseGuards } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../common/guards/auth.guard';
 import { DepartmentsService } from '../departments/departments.service';
 import { Department } from '../departments/entities/department.entity';
@@ -38,12 +38,19 @@ export class EmployeesResolver {
   async createEmployee(
     @Args('createEmployeeInput') createEmployeeInput: CreateEmployeeInput,
   ) {
-    const employee = await this.employeesService.create(createEmployeeInput);
-    return {
-      success: true,
-      message: 'Employee created successfully',
-      item: employee,
-    };
+    try {
+      const employee = await this.employeesService.create(createEmployeeInput);
+      return {
+        success: true,
+        message: 'Employee created successfully',
+        item: employee,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        message: e.message,
+      };
+    }
   }
 
   @Query(() => EmployeesListResponse, { name: 'employees' })
@@ -82,8 +89,14 @@ export class EmployeesResolver {
   }
 
   @Query(() => Employee, { name: 'employee' })
-  findOne(@Args('id', { type: () => String }) id: string) {
-    return this.employeesService.findOne(id);
+  async findOne(@Args('id', { type: () => String }) id: string) {
+    try {
+      const employee = await this.employeesService.findOne(id);
+      if (!employee) throw new Error('Employee not found');
+      return employee;
+    } catch (e) {
+      throw new NotFoundException(e.message);
+    }
   }
 
   @Mutation(() => UpdateEmployeeMutationResponse)
