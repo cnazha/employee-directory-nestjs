@@ -30,7 +30,7 @@ This is the backend for the Employee Directory application. It is built using Ne
 - [x] Documentation: Compodoc - GraphQL Code Generator
 - [x] CI/CD: Github Actions - Docker Hub
 
-* Not implemented (suggestions): Dataloader - Redis cache - Firebase integration - Rate Limiting - Class Validators
+* Not implemented (suggestions): Logging - centralized error handler - Dataloader - Redis cache - Firebase integration - Rate Limiting - Class Validators - Fuzzy Search
 
 
 ## Installation
@@ -68,6 +68,7 @@ $ docker-compose up -f docker-compose-development.yml
 # Production - spins up the app only
 $ docker-compose up
 ```
+Image available at [Docker Hub](https://hub.docker.com/r/chrisnazha/employee-directory)
 
 ## Authentication
 Use the following header

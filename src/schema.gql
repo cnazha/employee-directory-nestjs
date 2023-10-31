@@ -232,7 +232,7 @@ type Query {
   department(id: String!): Department!
   departments: DepartmentsListResponse!
   employee(id: String!): Employee!
-  employees(filter: EmployeeFilterInput, pagination: PaginationInput, sort: SortEmployeeInput): EmployeesListResponse!
+  employees(filter: EmployeeFilterInput, pagination: PaginationInput = {limit: 10, page: 1}, sort: SortEmployeeInput): EmployeesListResponse!
 }
 
 type RemoveDepartmentMutationResponse implements MutationResponse {
