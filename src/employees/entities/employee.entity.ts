@@ -163,3 +163,13 @@ EmployeeSchema.pre<EmployeeDocument & any>(
 EmployeeSchema.index({ name: 'text' });
 EmployeeSchema.index({ email: 1 }, { unique: true });
 EmployeeSchema.index({ phone: 1 }, { unique: true });
+EmployeeSchema.index({
+  department: 1,
+  status: 1,
+  name: 1,
+  email: 1,
+  phone: 1,
+  jobTitle: 1,
+  createdAt: -1,
+  updatedAt: -1,
+});

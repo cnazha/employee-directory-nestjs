@@ -142,6 +142,7 @@ export class EmployeesResolver {
   @ResolveField(() => Department, { name: 'department' })
   async employeeDepartment(@Parent() employee: Employee) {
     try {
+      // TODO - Implement DataLoader
       const departmentId = employee.department as string;
       if (departmentId) {
         const department = await this.departmentService.findOne(departmentId);
