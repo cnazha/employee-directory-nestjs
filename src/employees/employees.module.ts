@@ -4,9 +4,11 @@ import { EmployeesResolver } from './employees.resolver';
 import { Employee, EmployeeSchema } from './entities/employee.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as paginate from 'mongoose-paginate-v2';
+import { DepartmentsModule } from '../departments/departments.module';
 
 @Module({
   imports: [
+    DepartmentsModule,
     MongooseModule.forFeatureAsync([
       {
         name: Employee.name,

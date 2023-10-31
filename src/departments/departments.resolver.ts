@@ -9,7 +9,7 @@ import {
   RemoveDepartmentMutationResponse,
   UpdateDepartmentMutationResponse,
 } from './departments.responses';
-import { UseGuards } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../common/guards/auth.guard';
 
 @Resolver(() => Department)
@@ -66,7 +66,13 @@ export class DepartmentsResolver {
 
   @Query(() => Department, { name: 'department' })
   findOne(@Args('id', { type: () => String }) id: string) {
-    return this.departmentsService.findOne(id);
+    try {
+      const department = this.departmentsService.findOne(id);
+      if (!department) throw new Error('Department not found');
+      return department;
+    } catch (e) {
+      throw new NotFoundException(e.message);
+    }
   }
 
   @Mutation(() => UpdateDepartmentMutationResponse)

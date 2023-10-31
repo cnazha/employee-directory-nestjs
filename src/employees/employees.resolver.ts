@@ -1,4 +1,12 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Directive,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeInput } from './dto/create-employee.input';
@@ -13,24 +21,36 @@ import { UpdateEmployeeStatusInput } from './dto/update-employee-status.input';
 import { EmployeeFilterInput } from './dto/filter-employee.input';
 import { SortEmployeeInput } from './dto/sort-employee.input';
 import { PaginationInput } from '../common/pagination/pagination.input';
-import { UseGuards } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../common/guards/auth.guard';
+import { DepartmentsService } from '../departments/departments.service';
+import { Department } from '../departments/entities/department.entity';
 
 @Resolver(() => Employee)
 @UseGuards(AuthGuard)
 export class EmployeesResolver {
-  constructor(private readonly employeesService: EmployeesService) {}
+  constructor(
+    private readonly employeesService: EmployeesService,
+    private readonly departmentService: DepartmentsService,
+  ) {}
 
   @Mutation(() => CreateEmployeeMutationResponse)
   async createEmployee(
     @Args('createEmployeeInput') createEmployeeInput: CreateEmployeeInput,
   ) {
-    const employee = await this.employeesService.create(createEmployeeInput);
-    return {
-      success: true,
-      message: 'Employee created successfully',
-      item: employee,
-    };
+    try {
+      const employee = await this.employeesService.create(createEmployeeInput);
+      return {
+        success: true,
+        message: 'Employee created successfully',
+        item: employee,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        message: e.message,
+      };
+    }
   }
 
   @Query(() => EmployeesListResponse, { name: 'employees' })
@@ -69,8 +89,14 @@ export class EmployeesResolver {
   }
 
   @Query(() => Employee, { name: 'employee' })
-  findOne(@Args('id', { type: () => String }) id: string) {
-    return this.employeesService.findOne(id);
+  async findOne(@Args('id', { type: () => String }) id: string) {
+    try {
+      const employee = await this.employeesService.findOne(id);
+      if (!employee) throw new Error('Employee not found');
+      return employee;
+    } catch (e) {
+      throw new NotFoundException(e.message);
+    }
   }
 
   @Mutation(() => UpdateEmployeeMutationResponse)
@@ -94,6 +120,9 @@ export class EmployeesResolver {
       };
     }
   }
+  @Directive(
+    '@deprecated(reason: "This mutation will be removed in the next version, pending the HR Service")',
+  )
   @Mutation(() => UpdateEmployeeMutationResponse)
   updateEmployeeStatus(
     @Args('updateEmployeeStatusInput')
@@ -119,6 +148,22 @@ export class EmployeesResolver {
         success: false,
         message: e.message,
       };
+    }
+  }
+
+  // Used resolve field instead of populate for demo only
+  @ResolveField(() => Department, { name: 'department' })
+  async employeeDepartment(@Parent() employee: Employee) {
+    try {
+      // TODO - Implement DataLoader
+      const departmentId = employee.department as string;
+      if (departmentId) {
+        const department = await this.departmentService.findOne(departmentId);
+        return department;
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
   }
 }
