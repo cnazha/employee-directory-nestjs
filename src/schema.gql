@@ -116,7 +116,7 @@ type Employee implements UserInterface {
   lastName: String!
   name: String!
   phone: PhoneNumber!
-  salaryCurrency: Currency
+  salaryCurrency: Currency @deprecated(reason: "This field has been deprecated in favor of the Accounting Service")
   status: EmployeeStatus!
   updatedAt: DateTime
 }

@@ -85,7 +85,11 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
   @Prop({
     type: String,
   })
-  @Field(() => GraphQLCurrency, { nullable: true })
+  @Field(() => GraphQLCurrency, {
+    nullable: true,
+    deprecationReason:
+      'This field has been deprecated in favor of the Accounting Service',
+  })
   salaryCurrency: string;
 
   @Prop({

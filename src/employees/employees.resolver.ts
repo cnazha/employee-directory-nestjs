@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Directive, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeInput } from './dto/create-employee.input';
@@ -94,6 +94,9 @@ export class EmployeesResolver {
       };
     }
   }
+  @Directive(
+    '@deprecated(reason: "This mutation will be removed in the next version, pending the HR Service")',
+  )
   @Mutation(() => UpdateEmployeeMutationResponse)
   updateEmployeeStatus(
     @Args('updateEmployeeStatusInput')
