@@ -111,7 +111,8 @@ export class Employee extends BaseDocumentEntity implements UserInterface {
     type: String,
     required: false,
     ref: 'Department',
-    autopopulate: true,
+    // Replaced with resolve field for demo purposes
+    //autopopulate: true,
   })
   @Field(() => Department, { nullable: true })
   department?: Department | string;

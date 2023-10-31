@@ -1,4 +1,12 @@
-import { Args, Directive, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Directive,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { EmployeesService } from './employees.service';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeInput } from './dto/create-employee.input';
@@ -15,11 +23,16 @@ import { SortEmployeeInput } from './dto/sort-employee.input';
 import { PaginationInput } from '../common/pagination/pagination.input';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../common/guards/auth.guard';
+import { DepartmentsService } from '../departments/departments.service';
+import { Department } from '../departments/entities/department.entity';
 
 @Resolver(() => Employee)
 @UseGuards(AuthGuard)
 export class EmployeesResolver {
-  constructor(private readonly employeesService: EmployeesService) {}
+  constructor(
+    private readonly employeesService: EmployeesService,
+    private readonly departmentService: DepartmentsService,
+  ) {}
 
   @Mutation(() => CreateEmployeeMutationResponse)
   async createEmployee(
@@ -122,6 +135,21 @@ export class EmployeesResolver {
         success: false,
         message: e.message,
       };
+    }
+  }
+
+  // Used resolve field instead of populate for demo only
+  @ResolveField(() => Department, { name: 'department' })
+  async employeeDepartment(@Parent() employee: Employee) {
+    try {
+      const departmentId = employee.department as string;
+      if (departmentId) {
+        const department = await this.departmentService.findOne(departmentId);
+        return department;
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
   }
 }
