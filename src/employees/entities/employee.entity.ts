@@ -161,6 +161,7 @@ EmployeeSchema.pre<EmployeeDocument & any>(
 );
 
 EmployeeSchema.index({ name: 'text' });
+EmployeeSchema.index({ name: 1 });
 EmployeeSchema.index({ email: 1 }, { unique: true });
 EmployeeSchema.index({ phone: 1 }, { unique: true });
 EmployeeSchema.index({

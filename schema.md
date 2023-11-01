@@ -458,7 +458,7 @@ Employee Birthdate - example 2000-01-20
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>department</strong></td>
-<td valign="top"><a href="#department">Department</a></td>
+<td valign="top"><a href="#department">Department</a>!</td>
 <td></td>
 </tr>
 <tr>
@@ -505,9 +505,16 @@ Last name
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>salaryCurrency</strong></td>
+<td colspan="2" valign="top"><strong>salaryCurrency</strong> ⚠️</td>
 <td valign="top"><a href="#currency">Currency</a></td>
-<td></td>
+<td>
+<p>⚠️ <strong>DEPRECATED</strong></p>
+<blockquote>
+
+This field has been deprecated in favor of the Accounting Service
+
+</blockquote>
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>status</strong></td>
@@ -903,11 +910,11 @@ Employee phone number
 </thead>
 <tbody>
 <tr>
-<td colspan="2" valign="top"><strong>department</strong></td>
+<td colspan="2" valign="top"><strong>departments</strong></td>
 <td valign="top"><a href="#string">String</a></td>
 <td>
 
-Employee department
+Employee departments
 
 </td>
 </tr>

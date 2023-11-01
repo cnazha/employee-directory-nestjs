@@ -15,7 +15,7 @@ export class EmployeeFilterInput {
 
   @Field(() => String, {
     nullable: true,
-    description: 'Employee department',
+    description: 'Employee departments',
   })
-  department?: string;
+  departments?: string[];
 }

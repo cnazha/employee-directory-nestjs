@@ -45,7 +45,7 @@ export class EmployeesService {
     filter?: {
       name?: string;
       status?: EmployeeStatus;
-      department?: string;
+      departments?: string[];
     },
     pagination?: PaginationArgs,
     sort?: {
@@ -56,20 +56,29 @@ export class EmployeesService {
   ): Promise<IPaginatedType<Employee>> {
     const name = filter?.name;
     const status = filter?.status;
-    const department = filter?.department;
+    const departments = filter?.departments;
     const query = {};
 
     if (name) {
-      query['$text'] = {
-        $search: name,
-      };
+      query['$or'] = [
+        {
+          $text: {
+            $search: name,
+          },
+        },
+        {
+          name: { $regex: new RegExp(name, 'i') },
+        },
+      ];
     }
     if (status) {
       query['status'] = status;
     }
 
-    if (department) {
-      query['department'] = department;
+    if (departments) {
+      query['department'] = {
+        $in: departments,
+      };
     }
 
     const result = await this.employeeModel.paginate(query, {

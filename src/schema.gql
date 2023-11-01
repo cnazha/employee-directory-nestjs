@@ -122,8 +122,8 @@ type Employee implements UserInterface {
 }
 
 input EmployeeFilterInput {
-  """Employee department"""
-  department: String
+  """Employee departments"""
+  departments: String
   name: String
   status: EmployeeStatus
 }
