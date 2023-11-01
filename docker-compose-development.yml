@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    container_name: employee-app-${APP_ENV}
+    container_name: employee-app
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,7 +13,7 @@ services:
     depends_on:
       - mongodb
   mongodb:
-    container_name: mongodb-${APP_ENV}
+    container_name: mongodb
     image: mongodb/mongodb-community-server:latest
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
@@ -25,7 +25,7 @@ services:
         source: ./databases/mongodb/data/${APP_ENV}
         target: /data/db
   redis:
-    container_name: redis-${APP_ENV}
+    container_name: redis
     image: redis/redis-stack:latest
     ports:
       - ${REDIS_PORT}:6379
