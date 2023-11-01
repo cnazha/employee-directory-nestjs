@@ -62,11 +62,15 @@ $ npm run start:prod
 ### Docker
 ```bash
 # development - spins up Redis & MongoDB too
-$ docker-compose up -f docker-compose-development.yml
+$ docker-compose -f docker-compose-development.yml up -d --force-recreate
 ```
 ```bash
 # Production - spins up the app only
-$ docker-compose up
+$ docker-compose up -d --force-recreate
+```
+```bash
+# Remove all containers with network
+$ docker-compose down --remove-orphans
 ```
 Image available at [Docker Hub](https://hub.docker.com/r/chrisnazha/employee-directory)
 
