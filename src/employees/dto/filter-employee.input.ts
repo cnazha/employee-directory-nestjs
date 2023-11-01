@@ -13,7 +13,7 @@ export class EmployeeFilterInput {
   })
   status: EmployeeStatus;
 
-  @Field(() => String, {
+  @Field(() => [String], {
     nullable: true,
     description: 'Employee departments',
   })
