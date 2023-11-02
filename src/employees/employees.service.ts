@@ -11,6 +11,7 @@ import { PaginationArgs } from '../common/pagination/pagination.input';
 
 import { SortOrder } from '../common/sort/sort.input';
 import { DepartmentsService } from '../departments/departments.service';
+import { escapeRegExp } from '../common/helpers/escape-regex';
 
 @Injectable()
 export class EmployeesService {
@@ -67,7 +68,7 @@ export class EmployeesService {
           },
         },
         {
-          name: { $regex: new RegExp(name, 'i') },
+          name: { $regex: new RegExp(escapeRegExp(name), 'i') },
         },
       ];
     }
