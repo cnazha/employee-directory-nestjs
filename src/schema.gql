@@ -35,7 +35,7 @@ input CreateEmployeeInput {
 
   """Employee birthdate"""
   birthdate: Date
-  department: String
+  department: String!
 
   """Employee email address"""
   email: EmailAddress!
@@ -49,7 +49,7 @@ input CreateEmployeeInput {
 
   """Employee phone number"""
   phone: PhoneNumber!
-  salaryCurrency: Currency!
+  salaryCurrency: Currency
 }
 
 type CreateEmployeeMutationResponse implements MutationResponse {
@@ -123,7 +123,7 @@ type Employee implements UserInterface {
 
 input EmployeeFilterInput {
   """Employee departments"""
-  departments: String
+  departments: [String!]
   name: String
   status: EmployeeStatus
 }
