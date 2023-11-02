@@ -22,10 +22,13 @@ export class CreateEmployeeInput {
     description: 'Employee birthdate',
   })
   birthdate: Date;
-  @Field(() => GraphQLCurrency)
+  @Field(() => GraphQLCurrency, {
+    nullable: true,
+    deprecationReason: 'Migrated to different service',
+  })
   salaryCurrency: string;
   @Field(() => String, {
-    nullable: true,
+    nullable: false,
   })
   department: string;
   @Field(() => String, {
